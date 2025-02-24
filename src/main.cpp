@@ -2,7 +2,7 @@
 #include "./motors/motor_control.h"
 #include "./sensors/ultrasonic_sensor.h"
 #include "./sensors/huminity_sensor.h"
-
+#include "./IR_array_sensor/ir_array.h"
 #include <DHT.h>
 #include <WiFi.h>
 
@@ -27,14 +27,20 @@ void loop() {
   if (distance <= 16.0) {
     Serial.println("Object detected! Stopping motors.");
     Serial.println(distance);
-    turnLeft90();
+    stopMotors();
   } else {
-    // moveMotors();
+    followLine();
   }
 
-  // Collect and display data at intervals
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;  // Update the last time we collected data
-    collectAndDisplayData();         // Call the data collection function
-  }
+//   // Collect and display data at intervals
+//   if (currentMillis - previousMillis >= interval) {
+//     previousMillis = currentMillis;  // Update the last time we collected data
+//     collectAndDisplayData();         // Call the data collection function
+//   }
+
+
+
+
+
+
 }
