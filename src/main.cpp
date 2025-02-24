@@ -13,24 +13,24 @@ const long interval = 1000;         // Interval to collect data (in milliseconds
 void setup() {
   Serial.begin(9600); 
   dht.begin(); 
-  initUltrasonicSensor();
+//   initUltrasonicSensor();
   initMotors();
 
 
 }
 
 void loop() {
-  unsigned long currentMillis = millis();  
+//   unsigned long currentMillis = millis();  
 
-  float distance = measureDistance();
+//   float distance = measureDistance();
  
-  if (distance <= 16.0) {
-    Serial.println("Object detected! Stopping motors.");
-    Serial.println(distance);
-    stopMotors();
-  } else {
+//   if (distance <= 16.0) {
+//     Serial.println("Object detected! Stopping motors.");
+//     Serial.println(distance);
+//     stopMotors();
+//   } else {
     followLine();
-  }
+//   }
 
 //   // Collect and display data at intervals
 //   if (currentMillis - previousMillis >= interval) {

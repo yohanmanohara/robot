@@ -3,29 +3,30 @@
 
 
 // Read IR sensor values
-void readIRSensors(int &ir1, int &ir2, int &ir3, int &ir4, int &ir5) {
-    ir1 = digitalRead(IR1_PIN);
+void readIRSensors( int &ir2, int &ir3) {
+    // ir1 = digitalRead(IR1_PIN);
     ir2 = digitalRead(IR2_PIN);
     ir3 = digitalRead(IR3_PIN);
-    ir4 = digitalRead(IR4_PIN);
-    ir5 = digitalRead(IR5_PIN);
+    // ir4 = digitalRead(IR4_PIN);
+    // ir5 = digitalRead(IR5_PIN);
 }
 
 
 // Function to follow the line based on IR sensor input
 void followLine() {
-    int ir1, ir2, ir3, ir4, ir5;
-    readIRSensors(ir1, ir2, ir3, ir4, ir5);
+    int  ir2, ir3;
+    readIRSensors( ir2, ir3);
 
     // Serial.print("IR1: "); Serial.print(ir1);
     Serial.print(" IR2: "); Serial.print(ir2);
     Serial.print(" IR3: "); Serial.print(ir3);
-    Serial.print(" IR4: "); Serial.print(ir4);
+    // Serial.print(" IR4: "); Serial.print(ir4);
     // Serial.print(" IR5: "); Serial.println(ir5);
 
-    if (ir3 == 1 && ir2 == 0 && ir4 == 0 ) {
+    // delay(10);
+    if (ir3 == 1 && ir2 == 0  ) {
         moveMotors();
-    } else if (ir2 == 0 && ir3 == 0 && ir4 == 0 ) {
+    } else if (ir2 == 0 && ir3 == 0  ) {
         stopMotors();
     // } else if (ir4 == 0 && ir2 == 0 && ir3 == 0) {
     //     turnRight();
