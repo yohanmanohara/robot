@@ -13,10 +13,10 @@
 
 void readIRSensors( int &ir2, int &ir3 ,int &ir4,int &ir5,int &ir1);
 void followLine();
-// void moveMotors();
-// void turnLeft();
-// void turnRight();
-// void stopMotors();
+void moveMotors();
+void turnLeft();
+void turnRight();
+void stopMotors();
 // float getDistance();
 
 #endif // IR_ARRAY_H

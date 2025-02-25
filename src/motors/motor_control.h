@@ -17,6 +17,7 @@ void stopMotors();
 void moveback();
 void turnLeft();
 void turnRight();
+void initIRSensors();
 void turnRight90();
 void turnLeft90();
 #endif

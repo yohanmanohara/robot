@@ -20,6 +20,7 @@ void setup() {
   Serial.begin(9600);
   dht.begin();
   initMotors();
+  initIRSensors();
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
