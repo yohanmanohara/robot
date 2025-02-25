@@ -8,8 +8,9 @@
 
 const char* ssid = "SLT";         
 const char* password = "6CC253A5"; 
-LoadCellHandler loadCellHandler;
 WebServer server(80); 
+LoadCellHandler loadCellHandler;
+
 
 const int stepDelay = 200;  
 
@@ -18,9 +19,9 @@ const int stepsBackward = (20 * 1000000) / stepDelay;
 
 void setup() {
   Serial.begin(9600);
-    motorSetup();
-    loadCellHandler.begin();
-    WiFi.begin(ssid, password);
+   
+   
+  WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
@@ -59,6 +60,7 @@ void setup() {
   ArduinoOTA.begin();
 
 
+
   server.on("/", HTTP_GET, []() {
     server.send(200, "text/plain", "Hello World!");
   });
@@ -66,19 +68,16 @@ void setup() {
   
   server.begin(); 
   Serial.println("Web server started");
-
-  Serial.println("HTTP server started");
-  Serial.println("Ready");
-  Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-
+ // motorSetup();
+    // loadCellHandler.begin();
 }
 void loop() {
   ArduinoOTA.handle();
   server.handleClient(); 
-    moveForward(stepsForward, stepDelay);
-    delay(1000); 
+    // moveForward(stepsForward, stepDelay);
+    // delay(1000); 
 
  
 
