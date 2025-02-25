@@ -58,12 +58,6 @@ void setup() {
   });
   ArduinoOTA.begin();
 
-  server.on("/readIRSensors", HTTP_GET, []() {
-    int ir2, ir3, ir4, ir5, ir1;
-    readIRSensors(ir2, ir3,ir4,ir5,ir1);
-    String response = "IR2: " + String(ir2) + " IR3: " + String(ir3);
-    server.send(200, "text/plain", response);
-  });
 
   server.on("/", HTTP_GET, []() {
     server.send(200, "text/plain", "Hello World!");
@@ -73,6 +67,10 @@ void setup() {
   server.begin(); 
   Serial.println("Web server started");
 
+  Serial.println("HTTP server started");
+  Serial.println("Ready");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 
 
 }
