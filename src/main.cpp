@@ -77,6 +77,8 @@ void setup() {
 
 }
 void loop() {
+  ArduinoOTA.handle();
+  server.handleClient(); 
     moveForward(stepsForward, stepDelay);
     delay(1000); 
 
