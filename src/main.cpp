@@ -60,8 +60,8 @@ void setup() {
   ArduinoOTA.begin();
 
   server.on("/readIRSensors", HTTP_GET, []() {
-    int ir2, ir3;
-    readIRSensors(ir2, ir3);
+    int ir2, ir3, ir4, ir5, ir1;
+    readIRSensors(ir2, ir3,ir4,ir5,ir1);
     String response = "IR2: " + String(ir2) + " IR3: " + String(ir3);
     server.send(200, "text/plain", response);
   });
