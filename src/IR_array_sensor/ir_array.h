@@ -17,6 +17,8 @@ void moveMotors();
 void turnLeft();
 void turnRight();
 void stopMotors();
+
+
 // float getDistance();
 
 #endif // IR_ARRAY_H
