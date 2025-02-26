@@ -20,6 +20,8 @@ const int stepsBackward = (20 * 1000000) / stepDelay;
 void setup() {
   Serial.begin(9600);
    
+ motorSetup();
+ loadCellHandler.begin();
    
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -70,15 +72,13 @@ void setup() {
   Serial.println("Web server started");
   Serial.println(WiFi.localIP());
 
- // motorSetup();
-    // loadCellHandler.begin();
 }
 void loop() {
   ArduinoOTA.handle();
   server.handleClient(); 
-    // moveForward(stepsForward, stepDelay);
-    // delay(1000); 
-
+  moveForward(stepsForward, stepDelay);
+  delay(1000); 
+  loadCellHandler.update();
  
 
    
