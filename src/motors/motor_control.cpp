@@ -36,8 +36,8 @@ void moveMotors() {
   digitalWrite(IN6, LOW);
   analogWrite(ENC, 100);
 
-  digitalWrite(IN7, HIGH);
-  digitalWrite(IN8, LOW);
+  digitalWrite(IN8, HIGH);
+  digitalWrite(IN7, LOW);
   analogWrite(END, 100);
 
   Serial.println("Motors running... FORWARD");
