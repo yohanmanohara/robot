@@ -1,8 +1,6 @@
 #include <Arduino.h>
-#include "./motors/motor_control.h"
 #include "./sensors/ultrasonic_sensor.h"
 #include "./sensors/huminity_sensor.h"
-#include "./IR_array_sensor/ir_array.h"
 
 #include <DHT.h>
 #include <WiFi.h>
@@ -10,7 +8,7 @@
 #include <WebServer.h>
 
 const char* ssid = "SLT";         
-const char* password = "6CC253A5"; 
+const char* password = "6CC253A"; 
 
 WebServer server(80); 
 
@@ -20,9 +18,7 @@ const long interval = 1000;
 void setup() {
   Serial.begin(9600);
   dht.begin();
-  initMotors();
-  initIRSensors();
-
+ 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -61,12 +57,7 @@ void setup() {
   });
   ArduinoOTA.begin();
 
-  server.on("/readIRSensors", HTTP_GET, []() {
-    int ir2, ir3, ir4, ir5, ir1;
-    readIRSensors(ir2, ir3,ir4,ir5,ir1);
-    String response = "IR2: " + String(ir2) + " IR3: " + String(ir3);
-    server.send(200, "text/plain", response);
-  });
+  
 
 
   server.on("/", HTTP_GET, []() {
