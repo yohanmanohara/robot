@@ -1,79 +1,71 @@
-#include <Arduino.h>
-#include "./sensors/ultrasonic_sensor.h"
-#include "./sensors/huminity_sensor.h"
+  #include <Arduino.h>
+  #include "./sensors/ultrasonic_sensor.h"
+  #include "./sensors/huminity_sensor.h"
+  #include "./sensors/nfc.h"
+  #include "./sensors/servo_motor.h"
+  #include <DHT.h>
+  #include <WiFi.h>
+  #include <ArduinoOTA.h>
+  #include <WebServer.h>
 
-#include <DHT.h>
-#include <WiFi.h>
-#include <ArduinoOTA.h>
-#include <WebServer.h>
+  const char* ssid = "SLT";         
+  const char* password = "6CC253A5"; 
 
-const char* ssid = "SLT";         
-const char* password = "6CC253A5"; 
+  WebServer server(80); 
+    
 
-WebServer server(80); 
-
-unsigned long previousMillis = 0;  
-const long interval = 1000;        
-
-void setup() {
-  Serial.begin(9600);
-  dht.begin();
- 
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
+  void setup() {
+    Serial.begin(9600);
+    dht.begin();
   
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(1000);
+      Serial.println("Connecting to WiFi...");
+    
+    }
+    Serial.println(WiFi.localIP());
+    Serial.println("Connected to WiFi");
+  
+    server.on("/", HTTP_GET, []() {
+      server.send(200, "text/plain", "Hello World!");
+    });
+  
+    
+    server.begin(); 
+    Serial.println("Web server started");
+    setupNFC();
+    setupServo();  // Initializes the servo motor
+
   }
-  Serial.println(WiFi.localIP());
-  Serial.println("Connected to WiFi");
-  
-
-  ArduinoOTA.onStart([]() {
-    String type;
-    if (ArduinoOTA.getCommand() == U_FLASH) { 
-      type = "sketch";
-    } else {
-      type = "spiffs";
-    }
-    Serial.println("Start updating " + type);
-  });
-  ArduinoOTA.onEnd([]() {
-    Serial.println("\nEnd OTA");
-  });
-  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-  });
-  ArduinoOTA.onError([](ota_error_t error) {
-    Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) {
-      Serial.println("Auth Failed");
-    } else if (error == OTA_BEGIN_ERROR) {
-      Serial.println("Begin Failed");
-    } else if (error == OTA_CONNECT_ERROR) {
-      Serial.println("Connect Failed");
-    } else if (error == OTA_RECEIVE_ERROR) {
-      Serial.println("Receive Failed");
-    } else if (error == OTA_END_ERROR) {
-      Serial.println("End Failed");
-    }
-  });
-  ArduinoOTA.begin();
-
-  
-
-
-  server.on("/", HTTP_GET, []() {
-    server.send(200, "text/plain", "Hello World!");
-  });
- 
-  
-  server.begin(); 
-  Serial.println("Web server started");
-}
+  bool doorOpen = false;
+String lastTagId = "";
 
 void loop() {
-  ArduinoOTA.handle();
-  server.handleClient(); 
-}
+  server.handleClient();
 
+  String tagId = readNFCTag();
+
+  if (tagId != "" && tagId != lastTagId) {
+    Serial.print("Tag detected! UID: ");
+    Serial.println(tagId);
+
+    if (!doorOpen) {
+      Serial.println("Opening door...");
+      setServoAngle(90);  // Open
+      doorOpen = true;
+    } else {
+      Serial.println("Closing door...");
+      setServoAngle(0);   // Close
+      doorOpen = false;
+    }
+
+    lastTagId = tagId;
+    delay(1000); // Debounce
+  }
+
+  // Clear lastTagId if no tag is present anymore
+  if (tagId == "") {
+    lastTagId = "";
+  }
+}
